@@ -52,13 +52,7 @@ public class MainActivity extends Activity {
             public void afterTextChanged(Editable editable) {
                 String txtName = editable.toString().toLowerCase(Locale.US);
                 txtSpy.setText(txtName);
-
-                String chosenColor = "white";
-                if(txtName.equals("nhat"))
-                    chosenColor = "yellow";
-                else if(txtName.equals("huy"))
-                    chosenColor = "purple";
-                setBackgroundColor(chosenColor);
+                setBackgroundColor(txtName);
             }
         });
 
@@ -99,11 +93,11 @@ public class MainActivity extends Activity {
     }
 
     private void setBackgroundColor(String color) {
-        if (color.contains("purple"))
+        if (color.contains("huy"))
             myScreen.setBackgroundColor(0xFF998CEB);
-        else if (color.contains("yellow"))
+        else if (color.contains("nhat"))
             myScreen.setBackgroundColor(0xFFFFE652);
-        else if (color.contains("white"))
+        else
             myScreen.setBackgroundColor(0xFFFFFFFF);
     }
 
@@ -119,10 +113,12 @@ public class MainActivity extends Activity {
     private void updateMeUsingSavedStateData(){
         SharedPreferences myPrefContainer = getSharedPreferences(PREFNAME, Activity.MODE_PRIVATE);
         String key = "chosenBackgroundColor";
-        String defaultValue = "red";
+        String defaultValue = "white";
         if(myPrefContainer != null && myPrefContainer.contains(key)){
             String color = myPrefContainer.getString(key,defaultValue);
             setBackgroundColor(color);
+            if (color != "")
+                txtSpy.setText(color);
         }
     }
 }
