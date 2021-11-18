@@ -50,8 +50,14 @@ public class MainActivity extends Activity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                String chosenColor = editable.toString().toLowerCase(Locale.US);
-                txtSpy.setText(chosenColor);
+                String txtName = editable.toString().toLowerCase(Locale.US);
+                txtSpy.setText(txtName);
+
+                String chosenColor = "white";
+                if(txtName.equals("nhat"))
+                    chosenColor = "yellow";
+                else if(txtName.equals("huy"))
+                    chosenColor = "purple";
                 setBackgroundColor(chosenColor);
             }
         });
@@ -63,6 +69,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
+        updateMeUsingSavedStateData();
         Toast.makeText(context, "onStart", Toast.LENGTH_SHORT).show();
     }
 
@@ -92,16 +99,12 @@ public class MainActivity extends Activity {
     }
 
     private void setBackgroundColor(String color) {
-        if (color.contains("red"))
-            myScreen.setBackgroundColor(0xffff0000);
-        else if (color.contains("green"))
-            myScreen.setBackgroundColor(0xff00ff00);
-        else if (color.contains("blue"))
-            myScreen.setBackgroundColor(0xff0000ff);
+        if (color.contains("purple"))
+            myScreen.setBackgroundColor(0xFF998CEB);
+        else if (color.contains("yellow"))
+            myScreen.setBackgroundColor(0xFFFFE652);
         else if (color.contains("white"))
-            myScreen.setBackgroundColor(0xffffffff);
-        else if (color.contains("gray"))
-            myScreen.setBackgroundColor(0xffffffff);
+            myScreen.setBackgroundColor(0xFFFFFFFF);
     }
 
     private void saveStateData() {
@@ -111,5 +114,15 @@ public class MainActivity extends Activity {
         String value = txtSpy.getText().toString();
         myPrefEditor.putString(key, value);
         myPrefEditor.commit();
+    }
+
+    private void updateMeUsingSavedStateData(){
+        SharedPreferences myPrefContainer = getSharedPreferences(PREFNAME, Activity.MODE_PRIVATE);
+        String key = "chosenBackgroundColor";
+        String defaultValue = "red";
+        if(myPrefContainer != null && myPrefContainer.contains(key)){
+            String color = myPrefContainer.getString(key,defaultValue);
+            setBackgroundColor(color);
+        }
     }
 }
